@@ -1,3 +1,5 @@
+import java.awt.*;
+import java.awt.geom.*;
 
 /**
  * Class BoxBall - a graphical ball that bounces off the walls like Pong.
@@ -9,8 +11,15 @@
 
 public class BoxBall
 {
-    // instance variables - replace the example below with your own
-    private int x;
+    private int ballDegradation = 2;
+    private Ellipse2D.Double circle;
+    private Color color;
+    private int diameter;
+    private int xPosition;
+    private int yPosition;
+    private final int groundPosition;      // y position of ground
+    private Canvas canvas;
+    private int ySpeed = 1;                // initial downward speed
 
     /**
      * Constructor for objects of class BoxBall
