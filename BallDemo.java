@@ -81,5 +81,10 @@ public class BallDemo
        myCanvas.setForegroundColor(Color.BLACK);
        myCanvas.drawLine(wallRight, 100, wallRight, 400);
 
+       // create and show the balls
+       BoxBall ball = new BoxBall(50, 50, 16, Color.BLUE, ground, myCanvas);
+       ball.draw();
+       //BouncingBall ball2 = new BouncingBall(70, 80, 20, Color.RED, ground, myCanvas);
+       //ball2.draw();
     }
 }
