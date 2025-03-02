@@ -52,4 +52,19 @@ public class BallDemo
             }
         }
     }
+    
+    /**
+     * Creates a rectangular box with one or more balls in it.
+     */
+    public void boxBounce()
+    {
+       int ground = 400;   // position of the ground line
+       int wallLeft = 200; // position of the left wall
+       int wallRight = 500; // position of the right wall
+       int ceiling = 200;  // position of the ceiling
+       
+       myCanvas.setVisible(true);
+       
+       
+    }
 }
