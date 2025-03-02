@@ -59,12 +59,27 @@ public class BallDemo
     public void boxBounce()
     {
        int ground = 400;   // position of the ground line
-       int wallLeft = 200; // position of the left wall
-       int wallRight = 500; // position of the right wall
-       int ceiling = 200;  // position of the ceiling
+       int wallLeft = 50; // position of the left wall
+       int wallRight = 550; // position of the right wall
+       int ceiling = 100;  // position of the ceiling
        
        myCanvas.setVisible(true);
        
+       // draw the ground
+       myCanvas.setForegroundColor(Color.BLACK);
+       myCanvas.drawLine(50, ground, 550, ground);
        
+       // draw the ceiling
+       myCanvas.setForegroundColor(Color.BLACK);
+       myCanvas.drawLine(50, ceiling, 550, ceiling);
+       
+       // draw the left wall
+       myCanvas.setForegroundColor(Color.BLACK);
+       myCanvas.drawLine(wallLeft, 100, wallLeft, 400);
+       
+       // draw the right wall
+       myCanvas.setForegroundColor(Color.BLACK);
+       myCanvas.drawLine(wallRight, 100, wallRight, 400);
+
     }
 }
