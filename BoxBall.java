@@ -11,56 +11,111 @@ import java.awt.geom.*;
 
 public class BoxBall
 {
-    private int ballDegradation = 2;
+    private int ballDegradation = 1;
     private Ellipse2D.Double circle;
     private Color color;
     private int diameter;
     private int xPosition;
     private int yPosition;
-    private final int groundPosition;      // y position of ground
-    private final int ceilingPosition;     // y position of ceiling
-    private final int wallLeftPosition;    // x position of left wall
-    private final int wallRightPosition;   // x position of right wall
+    private final Rectangle bounds;
     private Canvas canvas;
-    private int ySpeed = 1;                // initial downward speed
+    private int xSpeed;
+    private int ySpeed;  // initial downward speed
 
     /**
      * Constructor for objects of class BoxBall
      *
      * @param xPos  the horizontal coordinate of the ball
      * @param yPos  the vertical coordinate of the ball
+     * @param xSpeed  the horizontal speed of the ball
+     * @param ySpeed  the vertical speed of the ball
      * @param ballDiameter  the diameter (in pixels) of the ball
      * @param ballColor  the color of the ball
-     * @param groundPos  the position of the ground (where the ball will bounce)
-     * @param ceilingPos  the position of the ceiling
-     * @param wallLeftPos  the position of the left wall
-     * @param wallRightPos  the position of the right wall
+     * @param bounds  the rectanglular bounding box
      * @param drawingCanvas  the canvas to draw this ball on
      */
-    public BoxBall(int xPos, int yPos, int ballDiameter, Color ballColor,
-                        int groundPos, int ceilingPos, int wallLeftPos,
-                        int wallRightPos, Canvas drawingCanvas)
+    public BoxBall(int xPos, int yPos, int xSpeed, int ySpeed,
+                   int ballDiameter, Color ballColor,
+                   Rectangle boundingRectangle, Canvas drawingCanvas)
     {
         xPosition = xPos;
         yPosition = yPos;
+        this.xSpeed = xSpeed;
+        this.ySpeed = ySpeed;
         color = ballColor;
         diameter = ballDiameter;
-        groundPosition = groundPos;
-        ceilingPosition = ceilingPos;
-        wallLeftPosition = wallLeftPos;
-        wallRightPosition = wallRightPos;
+        bounds = boundingRectangle;
         canvas = drawingCanvas;
     }
 
     /**
-     * An example of a method - replace this comment with your own
-     *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
-     */
-    public int sampleMethod(int y)
+     * Draw this ball at its current position onto the canvas.
+     **/
+    public void draw()
     {
-        // put your code here
-        return x + y;
+        canvas.setForegroundColor(color);
+        canvas.fillCircle(xPosition, yPosition, diameter);
+    }
+
+    /**
+     * Erase this ball at its current position.
+     **/
+    public void erase()
+    {
+        canvas.eraseCircle(xPosition, yPosition, diameter);
+    }    
+    
+    /**
+    * Move this ball according to its position and speed and redraw.
+    **/
+    public void move()
+    {
+        // remove from canvas at the current position
+        erase();
+            
+        // compute new position
+        yPosition += ySpeed;
+        xPosition += xSpeed;
+
+        // check if it has hit the border        
+        if(yPosition >= (bounds.getMaxY() - diameter) && ySpeed > 0) 
+        {
+            yPosition = (int)(bounds.getMaxY() - diameter);
+            ySpeed = -ySpeed + ballDegradation; 
+            if(ySpeed > 0) {
+                ySpeed = 0;
+            }
+        }
+        else if(yPosition <= (bounds.getMinY()) && ySpeed < 0) 
+        {
+            yPosition = (int)(bounds.getMinY()) + 1;
+            ySpeed = -ySpeed - ballDegradation; 
+            if(ySpeed < 0) {
+                ySpeed = 0;
+            }
+        }
+        if(xPosition >= (bounds.getMaxX() - diameter) && xSpeed > 0) 
+        {
+            xPosition = (int)(bounds.getMaxX() - diameter);
+            xSpeed = -xSpeed + ballDegradation; 
+            if(xSpeed > 0) {
+                xSpeed = 0;
+            }
+        }
+        else if(xPosition <= (bounds.getMinX()) && xSpeed < 0) 
+        {
+            xPosition = (int)(bounds.getMinX()) + 1;
+            xSpeed = -xSpeed - ballDegradation;
+            if(xSpeed < 0) {
+                xSpeed = 0;
+            }
+        }
+        
+
+        // draw again at new position
+        draw(); 
+        
+    
+
     }
 }
