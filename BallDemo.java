@@ -1,11 +1,12 @@
 import java.awt.Color;
 
-/**
- * Class BallDemo - a short demonstration showing animation with the 
- * Canvas class. 
+/** Lab 5 - Box Ball Animation Demo
+ * A short demonstration showing animation with the 
+ * Canvas class, where a ball bounces off walls inside 
+ * of a box.
  *
- * @author Michael Kölling and David J. Barnes
- * @version 2016.02.29
+ * @author Alessandro Marucci
+ * @version 2025.03.03
  */
 
 public class BallDemo   
