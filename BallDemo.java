@@ -1,4 +1,7 @@
 import java.awt.Color;
+import java.util.Random;
+import java.util.Iterator;
+import java.util.HashSet;
 
 /** Lab 5 - Box Ball Animation Demo
  * A short demonstration showing animation with the 
@@ -19,6 +22,7 @@ public class BallDemo
     public BallDemo()
     {
         myCanvas = new Canvas("Ball Demo", 600, 500);
+        myCanvas.setVisible(true);
     }
 
     /**
@@ -27,7 +31,6 @@ public class BallDemo
     public void bounce()
     {
         int ground = 400;   // position of the ground line
-
         myCanvas.setVisible(true);
 
         // draw the ground
@@ -35,23 +38,41 @@ public class BallDemo
         myCanvas.drawLine(50, ground, 550, ground);
 
         // create and show the balls
-        BouncingBall ball = new BouncingBall(50, 50, 16, Color.BLUE, ground, myCanvas);
-        ball.draw();
-        BouncingBall ball2 = new BouncingBall(70, 80, 20, Color.RED, ground, myCanvas);
-        ball2.draw();
+        Random random = new Random();
+        HashSet<BouncingBall> balls = new HashSet<>();
+        for(int i=0; i<numberOfBalls; i++)
+        {
+            Dimension size = myCanvas.getSize();
+            int x = random.nextInt((int) size.getWidth());
+            int y = random.nextInt((int) size.getHeight() / 2);
+            BouncingBall ball = new BouncingBall(x, y, 16, Color.blue, ground, myCanvas);
+            balls.add(ball);
+            ball.draw();
+        }
 
         // make them bounce
         boolean finished =  false;
         while (!finished) {
             myCanvas.wait(50);           // small delay
-            ball.move();
-            ball2.move();
+            Iterator<BouncingBall> it = balls.iterator();
+            finished = true;
+            while(it.hasNext())
+            {
+                BouncingBall ball = it.next();
+                ball.move();
             // stop once ball has travelled a certain distance on x axis
-            if(ball.getXPosition() >= 550 || ball2.getXPosition() >= 550) {
-                finished = true;
+            if(ball.getXPosition() < 550) {
+                finished = false;
             }
         }
     }
+    Iterator<BouncingBall> it = balls.iterator();
+    while(it.hasNext())
+    {
+        BouncingBall ball = it.next();
+        ball.erase();
+    }
+}
     
     /**
      * Creates a rectangular box with one or more balls in it.
@@ -82,8 +103,8 @@ public class BallDemo
        myCanvas.drawLine(wallRight, 100, wallRight, 400);
 
        // create and show the balls
-       BoxBall ball = new BoxBall(50, 50, 16, Color.BLUE, ground, myCanvas);
-       ball.draw();
+       //BoxBall ball = new BoxBall(50, 50, 16, Color.BLUE, ground, myCanvas);
+       //ball.draw();
        //BouncingBall ball2 = new BouncingBall(70, 80, 20, Color.RED, ground, myCanvas);
        //ball2.draw();
     }
