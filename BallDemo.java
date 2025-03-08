@@ -2,6 +2,8 @@ import java.awt.Color;
 import java.util.Random;
 import java.util.Iterator;
 import java.util.HashSet;
+import java.awt.Dimension;
+import java.awt.*;
 
 /** Lab 5 - Box Ball Animation Demo
  * A short demonstration showing animation with the 
@@ -26,9 +28,9 @@ public class BallDemo
     }
 
     /**
-     * Simulate two bouncing balls
+     * Simulates bouncing balls
      */
-    public void bounce()
+    public void bounce(int numberOfBalls)
     {
         int ground = 400;   // position of the ground line
         myCanvas.setVisible(true);
@@ -75,37 +77,50 @@ public class BallDemo
 }
     
     /**
-     * Creates a rectangular box with one or more balls in it.
+     * Simulates balls bouncing in a box.
      */
-    public void boxBounce()
+    public void boxBounce(int numberOfBalls)
     {
-       int ground = 400;   // position of the ground line
-       int wallLeft = 50; // position of the left wall
-       int wallRight = 550; // position of the right wall
-       int ceiling = 100;  // position of the ceiling
-       
        myCanvas.setVisible(true);
        
-       // draw the ground
-       myCanvas.setForegroundColor(Color.BLACK);
-       myCanvas.drawLine(50, ground, 550, ground);
-       
-       // draw the ceiling
-       myCanvas.setForegroundColor(Color.BLACK);
-       myCanvas.drawLine(50, ceiling, 550, ceiling);
-       
-       // draw the left wall
-       myCanvas.setForegroundColor(Color.BLACK);
-       myCanvas.drawLine(wallLeft, 100, wallLeft, 400);
-       
-       // draw the right wall
-       myCanvas.setForegroundColor(Color.BLACK);
-       myCanvas.drawLine(wallRight, 100, wallRight, 400);
+       // draw the box
+       Rectangle box = new Rectangle(50,50,300,300);
+       myCanvas.draw(box);
 
        // create and show the balls
-       //BoxBall ball = new BoxBall(50, 50, 16, Color.BLUE, ground, myCanvas);
-       //ball.draw();
-       //BouncingBall ball2 = new BouncingBall(70, 80, 20, Color.RED, ground, myCanvas);
-       //ball2.draw();
+        Random random = new Random();
+        HashSet<BoxBall> balls = new HashSet<>();
+        for(int i=0; i<numberOfBalls; i++) {
+            Dimension size = myCanvas.getSize();
+            int x = (int) box.getX() + random.nextInt((int) box.getWidth() - 16);            
+            int y = (int) box.getY() + random.nextInt((int) box.getHeight() - 16);
+            int xSpeed = random.nextInt(30);
+            int ySpeed = random.nextInt(30);
+            Color color = new Color(random.nextInt(256),random.nextInt(256),random.nextInt(256));
+            BoxBall ball = new BoxBall(x, y, xSpeed, ySpeed, 16, color, box, myCanvas);
+            balls.add(ball);
+            ball.draw();
+        }
+        // make them bounce        
+        boolean finished = false;
+        while(!finished) {
+            myCanvas.wait(50);           // small delay
+            Iterator<BoxBall> it = balls.iterator();
+            
+            finished = true;
+            while(it.hasNext()) {
+                BoxBall ball = it.next();
+                ball.move();
+                // stop only once all balls has stopped moving
+                if(ball.isMoving()) {
+                    finished = false;
+                }
+            }
+        }
+        Iterator<BoxBall> it = balls.iterator();
+        while(it.hasNext()) {
+            BoxBall ball = it.next();
+            ball.erase();
+        }
     }
 }

@@ -11,7 +11,7 @@ import java.awt.geom.*;
 
 public class BoxBall
 {
-    private int ballDegradation = 1;
+    private int ballDegradation = 0;
     private Ellipse2D.Double circle;
     private Color color;
     private int diameter;
@@ -113,9 +113,29 @@ public class BoxBall
         
 
         // draw again at new position
-        draw(); 
-        
+        draw();
+    }
     
-
+    /**
+     * return the horizontal position of this ball
+     */
+    public int getXPosition()
+    {
+        return xPosition;
+    }
+    
+    /**
+     * return the vertical position of this ball
+     */
+    public int getYPosition()
+    {
+        return yPosition;
+    }
+    
+    /**
+     * return true if the ball is still moving
+     */
+    public boolean isMoving() {
+        return (xSpeed != 0  || ySpeed != 0);
     }
 }
